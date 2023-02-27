@@ -16,8 +16,6 @@ export default function Todo() {
     event.preventDefault();
     setId(Math.floor(Math.random() * 10000));
     setMyArray([...myArray, { task, id, complete }]);
-    let handleTaskChange = ""
-      
   });
 
   useEffect(() => {
@@ -33,11 +31,10 @@ export default function Todo() {
     setMyArray(myArray.filter((item) => item.id !== id));
   };
 
-  let completeTask = (id, event) => {
-    event.preventDefault();
+  let toggleComplete = (id) => {
     setMyArray(myArray.map((item) => {
       if (item.id === id) {
-        return { ...item, complete: true };
+        return { ...item, complete: !item.complete };
       }
       return item;
     }));
@@ -59,9 +56,11 @@ export default function Todo() {
         <ul>
           {myArray.map((item) => (
             <li id='list' key={item.id}>
-              <span>Tasks: {item.task}</span>
+              <label>
+                <input type='checkbox' checked={item.complete} onChange={() => toggleComplete(item.id)}/>
+                <span>Task: {item.task}</span>
+              </label>
               <br />
-              <button onClick={(e) => completeTask(item.id, e)}>Complete</button>
               <button id='delete' onClick={() => deleteTask(item.id)}>Delete</button>
               <button>Edit</button>
             </li>
